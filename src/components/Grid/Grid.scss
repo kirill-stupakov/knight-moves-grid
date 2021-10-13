@@ -3,15 +3,12 @@
     display: flex;
 
     .cell {
-      margin: 0.1rem;
-      border-radius: 0.2rem;
-      width: 1rem;
-      height: 1rem;
       transition: background-color 0.3s, transform 0.3s;
+      cursor: pointer;
     }
 
     .cell:hover {
-      transform: scale(1.2);
+      transform: scale(0.8);
     }
   }
 }

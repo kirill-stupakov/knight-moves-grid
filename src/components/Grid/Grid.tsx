@@ -6,11 +6,10 @@ import { remToPx } from "../../Functions";
 interface Props {
   cells: { value: number; prev: number[] }[][];
   startHue: number;
-  endHue: number;
-  maximumDepth: number;
+  hueStep: number;
 }
 
-const Grid: React.FC<Props> = ({ cells, startHue, endHue, maximumDepth }) => {
+const Grid: React.FC<Props> = ({ cells, startHue, hueStep }) => {
   const [selectedCell, setSelectedCell] = useState<number[] | null>(null);
   const [path, setPath] = useState<number[][] | null>(null);
 
@@ -31,9 +30,7 @@ const Grid: React.FC<Props> = ({ cells, startHue, endHue, maximumDepth }) => {
     }
 
     setPath(newPath);
-  }, [selectedCell]);
-
-  // console.log(path);
+  }, [selectedCell, cells]);
 
   const rem = remToPx(1);
 
@@ -41,12 +38,12 @@ const Grid: React.FC<Props> = ({ cells, startHue, endHue, maximumDepth }) => {
   const gridMargin = 2 * rem;
   const cellMargin = 0.1;
 
-  // wN + 2*w*CM*N = AV - 2GM
+  // w*N + 2*w*CM*N = AV - 2*GM
   const cellWidth =
     (availableSpace - 2 * gridMargin) / (cells.length * (cellMargin * 2 + 1));
 
   const displayCells = cells.map((row, index_x) => (
-    <div className="row" key={index_x}>
+    <div className="row" key={index_x - (cells.length - 1) / 2}>
       {row.map((cell, index_y) => (
         <div
           className="cell"
@@ -59,17 +56,14 @@ const Grid: React.FC<Props> = ({ cells, startHue, endHue, maximumDepth }) => {
               cell.value === -1
                 ? "#0001"
                 : `hsla(
-                        ${
-                          startHue +
-                          ((endHue - startHue) * cell.value) / maximumDepth
-                        },
+                        ${startHue + cell.value * hueStep},
                         60%,
                         50%,
                         ${
                           selectedCell == null ||
                           path?.some(([x, y]) => x === index_x && y === index_y)
                             ? "100%"
-                            : "20%"
+                            : "30%"
                         }
                       )`,
           }}
@@ -79,7 +73,7 @@ const Grid: React.FC<Props> = ({ cells, startHue, endHue, maximumDepth }) => {
               : () => setSelectedCell([index_x, index_y])
           }
           // onMouseLeave={() => setSelectedCell(null)}
-          key={index_y}
+          key={index_y - (cells.length - 1) / 2}
         />
       ))}
     </div>
