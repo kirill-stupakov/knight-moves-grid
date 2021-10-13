@@ -1,0 +1,20 @@
+.App {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+
+  .controls {
+    width: 20rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .viewer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

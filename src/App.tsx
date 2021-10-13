@@ -1,24 +1,49 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+
+import { createGrid } from "./Functions";
+import Grid from "./components/Grid/Grid";
+import "./App.scss";
 
 function App() {
+  const [depth, setDepth] = useState(8);
+  const [startHue, setStartHue] = useState(0);
+  const [endHue, setEndHue] = useState(120);
+
+  const cells = createGrid(depth);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="controls">
+        <input
+          type="range"
+          value={depth}
+          onChange={(e) => setDepth(+e.target.value)}
+          min={1}
+          max={20}
+        />
+        <input
+          type="range"
+          value={startHue}
+          onChange={(e) => setStartHue(+e.target.value)}
+          min={0}
+          max={720}
+        />
+        <input
+          type="range"
+          value={endHue}
+          onChange={(e) => setEndHue(+e.target.value)}
+          min={0}
+          max={720}
+        />
+      </div>
+      <div className="viewer">
+        <Grid
+          cells={cells}
+          startHue={startHue}
+          endHue={endHue}
+          maximumDepth={depth}
+        />
+      </div>
     </div>
   );
 }
